@@ -4,6 +4,9 @@
 **Deployment:** Hugging Face Space
 **Framework:** Gradio + Scikit-learn + SHAP + LIME + GEMMA
 
+## Admin Interface Login:
+**UserName:** Amos
+**Password:** Kenya2025 
 ---
 
 ### Overview
@@ -199,4 +202,5 @@ Then open the Gradio link displayed in your terminal.
 
 This project is licensed under the **MIT License**.
 You are free to use, modify, and distribute it for educational or research purposes.
+
 
