@@ -1,0 +1,202 @@
+## Diabetes Predictor — Explainable AI (XAI) System
+
+**Author:** Amos Munene Njeru 
+**Deployment:** Hugging Face Space
+**Framework:** Gradio + Scikit-learn + SHAP + LIME + GEMMA
+
+---
+
+### Overview
+
+The **Diabetes Predictor** is an interactive AI application built to **predict the likelihood of diabetes** based on clinical input features.
+It integrates **Explainable AI (XAI)** methods — **SHAP**, **LIME**, and **GEMMA (LLM-based explanation)** — to ensure transparency and interpretability in predictions.
+
+This project runs on **Hugging Face Spaces** using **Gradio** for the web interface, allowing both clinicians and researchers to interact with machine learning models directly from a browser.
+
+---
+
+### Key Features
+
+*  **Automatic Data Loading:** Uses the PIMA Indians Diabetes dataset from a public URL.
+*  **Multi-Model Ensemble:** Choose between three model combinations (`Combo1`, `Combo2`, `Combo3`) featuring RandomForest, Logistic Regression, Gradient Boosting, AdaBoost, SVM, and ExtraTrees classifiers.
+*  **Explainable AI Integration:**
+
+  * **SHAP** — Global and local feature contribution analysis.
+  * **LIME** — Instance-level explanation of predictions.
+  * **GEMMA (LLM)** — Natural language interpretation of medical features.
+***Statistical Tools:** Outlier handling (Z-score, IQR), multicollinearity analysis (VIF), and feature importance visualization.
+*  **Admin Dashboard:** Allows data upload, model selection, imputation strategy selection, and evaluation visualization.
+*  **Evaluation Metrics:** Accuracy, Precision, Recall, F1-Score, ROC curves, and AUC comparisons.
+* **Automated Report Generation:** Generates and logs detailed diagnostic reports per patient encounter.
+
+---
+
+### Tech Stack
+
+| Component            | Technology Used                                                                                                             |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Frontend/UI**      | [Gradio](https://gradio.app)                                                                                                |
+| **Machine Learning** | Scikit-learn (RandomForest, Logistic Regression, etc.)                                                                      |
+| **Explainability**   | SHAP, LIME, GEMMA (via Hugging Face Transformers)                                                                           |
+| **Language Model**   | `google/gemma-1.1-2b-it` (optional if GPU available)                                                                        |
+| **Logging**          | Python `logging` module                                                                                                     |
+| **Visualization**    | Matplotlib, Seaborn                                                                                                         |
+| **Data Source**      | [PIMA Indians Diabetes Dataset](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv) |
+| **Deployment**       | Hugging Face Spaces                                                                                                         |
+
+---
+
+### Project Structure
+
+```
+diabetes-predictor/
+│
+├── app.py                # Main Gradio app with all model logic
+├── app.log               # Log file for actions and reports
+├── requirements.txt      # Dependencies for Hugging Face Space
+├── README.md             # (This file)
+└── assets/               # (Optional) images, screenshots, etc.
+```
+
+---
+
+### How to Use
+
+#### 1️ Open the App
+
+Visit  https://huggingface.co/spaces)
+
+#### 2️ Load Data
+
+* Option A: Use the default PIMA dataset automatically.
+* Option B: Upload your own CSV dataset with the following columns:
+
+  ```
+  Pregnancies, Glucose, BloodPressure, SkinThickness,
+  Insulin, BMI, DiabetesPedigreeFunction, Age, Outcome
+  ```
+
+#### 3️ Train & Evaluate
+
+* Select a model combination (Combo1, Combo2, Combo3).
+* Apply imputation methods (Median or KNN).
+* Visualize feature importance, correlation heatmaps, and ROC curves.
+
+#### 4 Make Predictions
+
+* Enter patient data manually via input boxes.
+* Click **Predict** to view the prediction, probability score, and execution time.
+
+#### Interpret Results
+
+* **LIME**: View local explanation for individual input.
+* **SHAP**: Understand which features drive the model globally.
+* **GEMMA**: Read natural language explanations for clinical context.
+
+#### Download Report
+
+* Automatically generates a clinical report with:
+
+  * Patient ID and visit details
+  * Model prediction
+  * SHAP/LIME/GEMMA explanations
+  * Clinician notes
+
+---
+
+### Environment Variables
+
+You may generate provide your Hugging Face API token to enable GEMMA model loading or request from me Amos:
+
+```bash
+export HF_TOKEN="your_huggingface_token_here"
+```
+
+If not provided, the app will skip loading the large LLM model (GEMMA) to save resources.
+
+---
+
+### Model Combinations
+
+| Combo      | Models Included                                                | Use Case                     |
+| ---------- | -------------------------------------------------------------- | ---------------------------- |
+| **Combo1** | RandomForest, LogisticRegression, GradientBoosting, ExtraTrees | Balanced performance         |
+| **Combo2** | AdaBoost, GradientBoosting, LogisticRegression, ExtraTrees     | Focused on boosting ensemble |
+| **Combo3** | RandomForest, AdaBoost, LogisticRegression, GradientBoosting   | High variance reduction      |
+
+---
+
+### Example Results
+
+| Metric    | RandomForest | LogisticRegression | GradientBoosting | ExtraTrees |
+| --------- | ------------ | ------------------ | ---------------- | ---------- |
+| Accuracy  | 0.87         | 0.83               | 0.85             | 0.86       |
+| Precision | 0.82         | 0.79               | 0.81             | 0.80       |
+| Recall    | 0.84         | 0.78               | 0.83             | 0.81       |
+| F1-Score  | 0.83         | 0.78               | 0.82             | 0.80       |
+
+*(These are representative example results based on the PIMA dataset.)*
+
+---
+
+### Explainable AI Outputs
+
+#### LIME
+
+Highlights which features influenced an individual prediction most strongly.
+Color-coded by positive (red = increases diabetes risk) and negative (green = decreases risk) impact.
+
+#### SHAP
+
+Displays global feature importance and directional effect (increase/decrease risk).
+
+#### GEMMA
+
+Generates natural-language insight like:
+
+> “High glucose and BMI levels are the strongest indicators of diabetes risk in this patient profile.”
+
+---
+
+### Logging & Reports
+
+All major actions (training, predictions, and report generation) are logged to `app.log`.
+Each patient report includes:
+
+* Patient ID
+* Encounter Reference
+* Model used
+* Prediction outcome
+* GEMMA explanation
+* Clinician comments
+
+---
+
+### Local Testing
+
+If you want to run locally (optional):
+
+```bash
+pip install -r requirements.txt
+python app.py
+```
+
+Then open the Gradio link displayed in your terminal.
+
+---
+
+### Acknowledgements
+
+* [UCI Machine Learning Repository – PIMA Indians Diabetes Dataset](https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes)
+* [SHAP Documentation](https://shap.readthedocs.io/en/latest/)
+* [LIME Documentation](https://github.com/marcotcr/lime)
+* [Gradio](https://gradio.app/)
+* [Google GEMMA LLM](https://huggingface.co/google/gemma-1.1-2b-it)
+
+---
+
+## License
+
+This project is licensed under the **MIT License**.
+You are free to use, modify, and distribute it for educational or research purposes.
+

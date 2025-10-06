@@ -1,0 +1,14 @@
+gradio>=3.30
+pandas
+numpy
+scikit-learn
+joblib
+shap
+lime
+matplotlib
+seaborn
+scipy
+statsmodels
+torch
+transformers
+openai-whisper
